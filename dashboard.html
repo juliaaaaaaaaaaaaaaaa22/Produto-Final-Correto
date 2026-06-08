@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — Cowabunga F1 | Race With The Shield</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ═══════════════════════════════════════
+           VARIABLES & RESET
+        ═══════════════════════════════════════ */
+        :root {
+            --gold:        #D4AF37;
+            --gold-light:  #F3E5AB;
+            --gold-mid:    #C9A227;
+            --gold-dim:    rgba(212,175,55,0.12);
+            --gold-glow:   rgba(212,175,55,0.35);
+            --green-deep:  #1A3320;
+            --green-light: #2A4B3C;
+            --black:       #050505;
+            --dark:        #0a0a0a;
+            --surface:     #0f0f0f;
+            --surface2:    #141414;
+            --border:      rgba(212,175,55,0.14);
+            --text-muted:  rgba(200,200,200,0.45);
+            --text-sub:    rgba(200,200,200,0.7);
+            --danger:      #c0392b;
+            --danger-glow: rgba(192,57,43,0.35);
+            --success:     #27ae60;
+            --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        *, *::before, *::after {
+            margin: 0; padding: 0;
+            box-sizing: border-box;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--black);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        /* ═══════════════════════════════════════
+           NAVBAR
+        ═══════════════════════════════════════ */
+        .navbar {
+            background: linear-gradient(90deg, var(--dark) 0%, rgba(26,51,32,0.4) 100%);
+            border-bottom: 2px solid rgba(212,175,55,0.2);
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+        }
+
+        .navbar-brand {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+            letter-spacing: 0.05em;
+        }
+
+        .navbar-menu {
+            display: flex;
+            gap: 1.2rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            padding: 0.6rem 1.2rem;
+            background: rgba(212,175,55,0.05);
+            border: 1.5px solid rgba(212,175,55,0.3);
+            color: var(--gold);
+            cursor: pointer;
+            border-radius: 6px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-btn:hover {
+            background: rgba(212,175,55,0.15);
+            border-color: var(--gold);
+            box-shadow: 0 0 20px var(--gold-glow);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: var(--gold);
+            color: var(--dark);
+        }
+
+        /* ═══════════════════════════════════════
+           MAIN CONTAINER
+        ═══════════════════════════════════════ */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .view {
+            display: none;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ═══════════════════════════════════════
+           PAGE TITLE
+        ═══════════════════════════════════════ */
+        .page-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        /* ═══════════════════════════════════════
+           FORM GROUPS
+        ═══════════════════════════════════════ */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-sub);
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 0.85rem 1.1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1.5px solid rgba(212,175,55,0.2);
+            color: #fff;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            backdrop-filter: blur(10px);
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 20px var(--gold-glow), inset 0 1px 0 rgba(255,255,255,0.1);
+            background: rgba(212,175,55,0.08);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* ═══════════════════════════════════════
+           BUTTONS
+        ═══════════════════════════════════════ */
+        .btn-primary {
+            padding: 0.8rem 2.2rem;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            border: none;
+            color: var(--dark);
+            font-weight: 800;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1.2px;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(212, 175, 55, 0.5);
+        }
+
+        .btn-primary:active {
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            padding: 0.7rem 1.6rem;
+            background: rgba(212,175,55,0.1);
+            border: 1.5px solid rgba(212,175,55,0.4);
+            color: var(--gold);
+            cursor: pointer;
+            border-radius: 6px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            text-transform: uppercase;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(212,175,55,0.2);
+            border-color: var(--gold);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #e74c3c);
+            color: #fff;
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(192, 57, 43, 0.4);
+        }
+
+        /* ═══════════════════════════════════════
+           CARDS & TABLES
+        ═══════════════════════════════════════ */
+        .card {
+            background: linear-gradient(135deg, rgba(15,15,15,0.9), rgba(20,20,20,0.7));
+            border: 1.5px solid rgba(212,175,55,0.15);
+            border-radius: 10px;
+            padding: 1.8rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+            transition: all 0.4s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(212,175,55,0.3);
+            box-shadow: 0 12px 48px rgba(212,175,55,0.15), inset 0 1px 0 rgba(255,255,255,0.08);
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        thead {
+            background: linear-gradient(90deg, rgba(212,175,55,0.15), rgba(212,175,55,0.05));
+            border-bottom: 2px solid var(--gold);
+        }
+
+        th {
+            padding: 1.1rem 1rem;
+            text-align: left;
+            color: var(--gold);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+        }
+
+        td {
+            padding: 0.95rem 1rem;
+            border-bottom: 1px solid rgba(212,175,55,0.1);
+            color: var(--text-sub);
+        }
+
+        tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background: rgba(212,175,55,0.08);
+        }
+
+        /* ═══════════════════════════════════════
+           STATS
+        ═══════════════════════════════════════ */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.8rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, rgba(15,15,15,0.85), rgba(20,20,20,0.6));
+            border: 1.5px solid rgba(212,175,55,0.15);
+            border-radius: 10px;
+            padding: 1.8rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .stat-box:hover {
+            transform: translateY(-8px);
+            border-color: rgba(212,175,55,0.3);
+            box-shadow: 0 15px 50px rgba(212,175,55,0.2), inset 0 1px 0 rgba(255,255,255,0.08);
+        }
+
+        .stat-value {
+            font-size: 2.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-top: 0.8rem;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 600;
+        }
+
+        /* ═══════════════════════════════════════
+           FORM LAYOUT
+        ═══════════════════════════════════════ */
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+
+        /* ═══════════════════════════════════════
+           TOAST
+        ═══════════════════════════════════════ */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--surface);
+            border-left: 4px solid var(--gold);
+            padding: 1rem 1.5rem;
+            border-radius: 4px;
+            color: #fff;
+            display: none;
+            gap: 1rem;
+            align-items: center;
+            animation: slideIn 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            display: flex;
+        }
+
+        .toast.success { border-left-color: var(--success); }
+        .toast.error { border-left-color: var(--danger); }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* ═══════════════════════════════════════
+           RESPONSIVE DESIGN
+        ═══════════════════════════════════════ */
+        @media (max-width: 768px) {
+            .navbar-menu {
+                flex-direction: column;
+                gap: 0.5rem;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--dark);
+                border-top: 1px solid var(--border);
+                padding: 1rem;
+                display: none;
+            }
+
+            .navbar-menu.show {
+                display: flex;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 0.5rem;
+            }
+        }
+
+        /* ═══════════════════════════════════════
+           ENHANCED ANIMATIONS
+        ═══════════════════════════════════════ */
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(212,175,55,0.1);
+        }
+
+        .stat-box {
+            transition: transform 0.3s ease;
+        }
+
+        .stat-box:hover {
+            transform: scale(1.05);
+        }
+
+        /* ═══════════════════════════════════════
+           LOADING STATES
+        ═══════════════════════════════════════ */
+        .loading {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+    </style>
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="navbar-brand">⚔ COWABUNGA F1</div>
+        <div class="navbar-menu">
+            <button class="nav-btn active" onclick="switchView('dashboard')">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </button>
+            <button class="nav-btn" onclick="switchView('corredores-list')">
+                <i class="fas fa-users"></i> Corredores
+            </button>
+            <button class="nav-btn" onclick="switchView('voltas-list')">
+                <i class="fas fa-circle-notch"></i> Voltas
+            </button>
+            <button class="nav-btn" onclick="switchView('ranking')">
+                <i class="fas fa-trophy"></i> Ranking
+            </button>
+            <button class="nav-btn" onclick="switchView('cadastro-corredor')">
+                <i class="fas fa-plus"></i> Cadastrar Corredor
+            </button>
+            <button class="nav-btn" onclick="switchView('cadastro-voltas')">
+                <i class="fas fa-plus"></i> Registrar Volta
+            </button>
+            <button class="nav-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Sair
+            </button>
+            <button class="nav-btn" onclick="voltarAoSite()" style="background: var(--green-light); border-color: var(--green-light);">
+                <i class="fas fa-arrow-left"></i> Voltar ao Site
+            </button>
+        </div>
+    </nav>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- DASHBOARD VIEW -->
+        <div id="dashboard" class="view active">
+            <h1 class="page-title">Dashboard</h1>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-value" id="stat-corredores">0</div>
+                    <div class="stat-label">Corredores</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="stat-voltas">0</div>
+                    <div class="stat-label">Voltas Registradas</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="stat-equipes">0</div>
+                    <div class="stat-label">Equipes</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 style="color: var(--gold); margin-bottom: 1rem; font-family: 'Orbitron', sans-serif;">Top 5 Corredores</h2>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Posição</th>
+                                <th>Nome</th>
+                                <th>Equipe</th>
+                                <th>Voltas</th>
+                                <th>Tempo Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="top-corredores">
+                            <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Carregando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- CADASTRO CORREDOR VIEW -->
+        <div id="cadastro-corredor" class="view">
+            <h1 class="page-title">Cadastrar Corredor</h1>
+            <div class="form-container">
+                <div class="card">
+                    <form id="form-corredor" onsubmit="salvarCorredor(event)">
+                        <div class="form-group">
+                            <label class="form-label">Nome Completo</label>
+                            <input type="text" class="form-input" id="corr-nome" placeholder="Ex: João Silva" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">E-mail</label>
+                            <input type="email" class="form-input" id="corr-email" placeholder="joao@example.com" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Turma</label>
+                                <input type="text" class="form-input" id="corr-turma" placeholder="Ex: 2A" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Equipe</label>
+                                <input type="text" class="form-input" id="corr-equipe" placeholder="Ex: Ferrari" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Senha</label>
+                            <input type="password" class="form-input" id="corr-senha" placeholder="••••••••" required>
+                        </div>
+
+                        <button type="submit" class="btn-primary" style="width: 100%;">
+                            <i class="fas fa-check"></i> Cadastrar Corredor
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- CADASTRO VOLTAS VIEW -->
+        <div id="cadastro-voltas" class="view">
+            <h1 class="page-title">Registrar Volta</h1>
+            <div class="form-container">
+                <div class="card">
+                    <form id="form-volta" onsubmit="salvarVolta(event)">
+                        <div class="form-group">
+                            <label class="form-label">Selecionar Corredor</label>
+                            <select class="form-select" id="volta-corredor" required>
+                                <option value="">-- Selecione um corredor --</option>
+                            </select>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Número da Volta</label>
+                                <input type="number" class="form-input" id="volta-numero" placeholder="1" min="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Tempo (segundos)</label>
+                                <input type="number" class="form-input" id="volta-tempo" placeholder="120.5" step="0.1" required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-primary" style="width: 100%;">
+                            <i class="fas fa-check"></i> Registrar Volta
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- CORREDORES LIST VIEW -->
+        <div id="corredores-list" class="view">
+            <h1 class="page-title">Corredores</h1>
+            <div class="card">
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>E-mail</th>
+                                <th>Turma</th>
+                                <th>Equipe</th>
+                                <th>Voltas</th>
+                                <th>Melhor Tempo</th>
+                                <th>Tempo Médio</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="list-corredores">
+                            <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Carregando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- CORREDOR DETALHES VIEW -->
+        <div id="corredor-detalhes" class="view">
+            <h1 class="page-title">Detalhes do Corredor</h1>
+            <div class="card" id="corredor-info">
+                <div class="stats-grid" id="corredor-stats">
+                    <!-- Stats will be populated by JS -->
+                </div>
+            </div>
+            <div class="card">
+                <h3 style="color: var(--gold); margin-bottom: 1rem; font-family: 'Orbitron', sans-serif;">Histórico de Voltas</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Volta</th>
+                                <th>Tempo (s)</th>
+                                <th>Data</th>
+                            </tr>
+                        </thead>
+                        <tbody id="corredor-voltas">
+                            <tr><td colspan="3" style="text-align: center; color: var(--text-muted);">Carregando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <button class="btn-secondary" onclick="switchView('corredores-list')" style="margin-top: 2rem;">
+                <i class="fas fa-arrow-left"></i> Voltar à Lista
+            </button>
+        </div>
+
+        <!-- VOLTAS LIST VIEW -->
+        <div id="voltas-list" class="view">
+            <h1 class="page-title">Voltas</h1>
+            <div class="card">
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Corredor</th>
+                                <th>Volta</th>
+                                <th>Tempo (s)</th>
+                                <th>Data</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="list-voltas">
+                            <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Carregando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- RANKING VIEW -->
+        <div id="ranking" class="view">
+            <h1 class="page-title">Ranking Geral</h1>
+            <div class="card">
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Posição</th>
+                                <th>Nome</th>
+                                <th>Equipe</th>
+                                <th>Voltas</th>
+                                <th>Melhor Volta (s)</th>
+                                <th>Tempo Total (s)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ranking-table">
+                            <tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Carregando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toast-msg">Mensagem</span>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3000';
+
+        // ════════════════════════════════════════
+        // VIEW SWITCHER
+        // ════════════════════════════════════════
+        function switchView(viewId) {
+            // Hide all views
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            
+            // Show selected view
+            document.getElementById(viewId).classList.add('active');
+
+            // Update nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Load data when switching views
+            if (viewId === 'dashboard') loadDashboard();
+            else if (viewId === 'corredores-list') loadCorredores();
+            else if (viewId === 'voltas-list') loadVoltas();
+            else if (viewId === 'ranking') loadRanking();
+            else if (viewId === 'cadastro-voltas') loadCorredoresSelect();
+        }
+
+        // ════════════════════════════════════════
+        // TOAST
+        // ════════════════════════════════════════
+        function showToast(msg, type = 'success') {
+            const toast = document.getElementById('toast');
+            const icon = toast.querySelector('i');
+            
+            document.getElementById('toast-msg').textContent = msg;
+            toast.classList.add('show', type);
+            
+            setTimeout(() => {
+                toast.classList.remove('show', type);
+            }, 3000);
+        }
+
+        // ════════════════════════════════════════
+        // DASHBOARD
+        // ════════════════════════════════════════
+        async function loadDashboard() {
+            try {
+                const [corredores, voltas] = await Promise.all([
+                    fetch(`${API_BASE}/corredores`).then(r => r.json()),
+                    fetch(`${API_BASE}/voltas`).then(r => r.json())
+                ]);
+
+                document.getElementById('stat-corredores').textContent = corredores.length;
+                document.getElementById('stat-voltas').textContent = voltas.length;
+                
+                const equipes = new Set(corredores.map(c => c.equipe));
+                document.getElementById('stat-equipes').textContent = equipes.size;
+
+                // Top 5 corredores
+                const ranking = corredores.map(c => {
+                    const voltasUser = voltas.filter(v => v.id_corredor === c.id);
+                    return {
+                        ...c,
+                        voltasCount: voltasUser.length,
+                        tempoTotal: voltasUser.reduce((sum, v) => sum + (v.tempo || 0), 0)
+                    };
+                }).sort((a, b) => b.voltasCount - a.voltasCount).slice(0, 5);
+
+                const tbody = document.getElementById('top-corredores');
+                tbody.innerHTML = ranking.map((c, i) => `
+                    <tr>
+                        <td style="color: var(--gold); font-weight: 700;">#${i + 1}</td>
+                        <td>${c.nome}</td>
+                        <td>${c.equipe}</td>
+                        <td>${c.voltasCount}</td>
+                        <td>${c.tempoTotal.toFixed(2)}s</td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Erro ao carregar dashboard:', error);
+                showToast('Erro ao carregar dados', 'error');
+            }
+        }
+
+        // ════════════════════════════════════════
+        // CORREDORES
+        // ════════════════════════════════════════
+        async function loadCorredores() {
+            try {
+                const corredores = await fetch(`${API_BASE}/corredores`).then(r => r.json());
+                const tbody = document.getElementById('list-corredores');
+                
+                tbody.innerHTML = corredores.map(c => `
+                    <tr>
+                        <td>${c.nome}</td>
+                        <td>${c.email}</td>
+                        <td>${c.turma}</td>
+                        <td>${c.equipe}</td>
+                        <td>${c.total_voltas || 0}</td>
+                        <td>${c.melhor_tempo ? c.melhor_tempo + 's' : '-'}</td>
+                        <td>${c.tempo_medio ? parseFloat(c.tempo_medio).toFixed(2) + 's' : '-'}</td>
+                        <td>
+                            <button class="btn-secondary" onclick="verDetalhesCorredor(${c.id})" style="margin-right: 0.5rem;">
+                                <i class="fas fa-eye"></i> Detalhes
+                            </button>
+                            <button class="btn-danger" onclick="deletarCorredor(${c.id})">
+                                <i class="fas fa-trash"></i> Deletar
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Erro ao carregar corredores:', error);
+                showToast('Erro ao carregar corredores', 'error');
+            }
+        }
+
+        async function loadCorredoresSelect() {
+            try {
+                const corredores = await fetch(`${API_BASE}/corredores`).then(r => r.json());
+                const select = document.getElementById('volta-corredor');
+                
+                select.innerHTML = '<option value="">-- Selecione um corredor --</option>' +
+                    corredores.map(c => `<option value="${c.id}">${c.nome}</option>`).join('');
+            } catch (error) {
+                console.error('Erro ao carregar corredores:', error);
+            }
+        }
+
+        async function salvarCorredor(e) {
+            e.preventDefault();
+            
+            const nome = document.getElementById('corr-nome').value;
+            const email = document.getElementById('corr-email').value;
+            const turma = document.getElementById('corr-turma').value;
+            const equipe = document.getElementById('corr-equipe').value;
+            const senha = document.getElementById('corr-senha').value;
+
+            try {
+                const response = await fetch(`${API_BASE}/corredores`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nome, email, turma, equipe, senha })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.erro);
+                }
+
+                showToast('Corredor cadastrado com sucesso!');
+                document.getElementById('form-corredor').reset();
+                setTimeout(() => switchView('corredores-list'), 1500);
+            } catch (error) {
+                console.error('Erro:', error);
+                showToast(error.message, 'error');
+            }
+        }
+
+        async function deletarCorredor(id) {
+            if (!confirm('Tem certeza que deseja deletar este corredor?')) return;
+
+            try {
+                const response = await fetch(`${API_BASE}/corredores/${id}`, {
+                    method: 'DELETE'
+                });
+
+                if (!response.ok) throw new Error('Erro ao deletar');
+
+                showToast('Corredor deletado com sucesso!');
+                loadCorredores();
+            } catch (error) {
+                showToast('Erro ao deletar corredor', 'error');
+            }
+        }
+
+        async function verDetalhesCorredor(id) {
+            try {
+                const corredor = await fetch(`${API_BASE}/corredores/${id}`).then(r => r.json());
+                
+                // Populate stats
+                const statsContainer = document.getElementById('corredor-stats');
+                statsContainer.innerHTML = `
+                    <div class="stat-box">
+                        <div class="stat-value">${corredor.nome}</div>
+                        <div class="stat-label">Nome</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">${corredor.equipe}</div>
+                        <div class="stat-label">Equipe</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">${corredor.total_voltas}</div>
+                        <div class="stat-label">Total de Voltas</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">${corredor.melhor_tempo ? parseFloat(corredor.melhor_tempo).toFixed(2) + 's' : '-'}</div>
+                        <div class="stat-label">Melhor Tempo</div>
+                    </div>
+                `;
+
+                // Populate voltas
+                const tbody = document.getElementById('corredor-voltas');
+                tbody.innerHTML = corredor.voltas.map(v => `
+                    <tr>
+                        <td>#${v.numero_volta}</td>
+                        <td>${v.tempo}s</td>
+                        <td>${new Date(v.data).toLocaleDateString('pt-BR')}</td>
+                    </tr>
+                `).join('');
+
+                switchView('corredor-detalhes');
+            } catch (error) {
+                console.error('Erro ao carregar detalhes do corredor:', error);
+                showToast('Erro ao carregar detalhes', 'error');
+            }
+        }
+
+        // ════════════════════════════════════════
+        // VOLTAS
+        // ════════════════════════════════════════
+        async function loadVoltas() {
+            try {
+                const voltas = await fetch(`${API_BASE}/voltas`).then(r => r.json());
+                const tbody = document.getElementById('list-voltas');
+                
+                tbody.innerHTML = voltas.map(v => `
+                    <tr>
+                        <td>${v.corredor_nome || 'Desconhecido'} (${v.equipe || ''})</td>
+                        <td>#${v.numero_volta}</td>
+                        <td>${v.tempo}s</td>
+                        <td>${new Date(v.data).toLocaleDateString('pt-BR')}</td>
+                        <td>
+                            <button class="btn-danger" onclick="deletarVolta(${v.id})">
+                                <i class="fas fa-trash"></i> Deletar
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Erro ao carregar voltas:', error);
+                showToast('Erro ao carregar voltas', 'error');
+            }
+        }
+
+        async function salvarVolta(e) {
+            e.preventDefault();
+
+            const id_corredor = document.getElementById('volta-corredor').value;
+            const numero_volta = document.getElementById('volta-numero').value;
+            const tempo = document.getElementById('volta-tempo').value;
+
+            try {
+                const response = await fetch(`${API_BASE}/voltas`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id_corredor, numero_volta, tempo })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.erro);
+                }
+
+                showToast('Volta registrada com sucesso!');
+                document.getElementById('form-volta').reset();
+                setTimeout(() => switchView('voltas-list'), 1500);
+            } catch (error) {
+                console.error('Erro:', error);
+                showToast(error.message, 'error');
+            }
+        }
+
+        async function deletarVolta(id) {
+            if (!confirm('Tem certeza que deseja deletar esta volta?')) return;
+
+            try {
+                const response = await fetch(`${API_BASE}/voltas/${id}`, {
+                    method: 'DELETE'
+                });
+
+                if (!response.ok) throw new Error('Erro ao deletar');
+
+                showToast('Volta deletada com sucesso!');
+                loadVoltas();
+            } catch (error) {
+                showToast('Erro ao deletar volta', 'error');
+            }
+        }
+
+        // ════════════════════════════════════════
+        // RANKING
+        // ════════════════════════════════════════
+        async function loadRanking() {
+            try {
+                const corredores = await fetch(`${API_BASE}/corredores`).then(r => r.json());
+
+                const ranking = corredores
+                    .filter(c => c.total_voltas > 0)
+                    .sort((a, b) => {
+                        if (a.total_voltas !== b.total_voltas) return b.total_voltas - a.total_voltas;
+                        return (a.melhor_tempo || Infinity) - (b.melhor_tempo || Infinity);
+                    });
+
+                const tbody = document.getElementById('ranking-table');
+                tbody.innerHTML = ranking.map((c, i) => `
+                    <tr>
+                        <td style="color: var(--gold); font-weight: 700; font-size: 1.1rem;">#${i + 1}</td>
+                        <td>${c.nome}</td>
+                        <td>${c.equipe}</td>
+                        <td>${c.total_voltas}</td>
+                        <td>${c.melhor_tempo ? parseFloat(c.melhor_tempo).toFixed(2) + 's' : '-'}</td>
+                        <td>${c.tempo_total ? parseFloat(c.tempo_total).toFixed(2) + 's' : '-'}</td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Erro ao carregar ranking:', error);
+                showToast('Erro ao carregar ranking', 'error');
+            }
+        }
+
+        // ════════════════════════════════════════
+        // LOGOUT
+        // ════════════════════════════════════════
+        function logout() {
+            if (confirm('Tem certeza que deseja sair?')) {
+                window.location.href = 'login.html';
+            }
+        }
+
+        function voltarAoSite() {
+            window.location.href = 'index.html';
+        }
+
+        // Load dashboard on page load
+        window.addEventListener('load', loadDashboard);
+    </script>
+</body>
+</html>

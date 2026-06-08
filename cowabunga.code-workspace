@@ -1,0 +1,18 @@
+{
+	"folders": [
+		{
+			"path": "../API-TEST/API_Login-main_2"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "Cowabunga_landingPage"
+	},
+	"extensions": {
+		"recommendations": [
+			"ritwickdey.liveserver"
+		]
+	}
+}
